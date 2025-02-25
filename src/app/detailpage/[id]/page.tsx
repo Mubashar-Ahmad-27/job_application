@@ -33,6 +33,7 @@ interface Job {
 }
 
 const fetchJobDetails = async (id: string): Promise<Job> => {
+  
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
   if (!res.ok) throw new Error("Failed to fetch job details");
   return res.json();
@@ -75,16 +76,10 @@ const JobDetail: React.FC = () => {
           <p className="mt-2 text-xl font-bold text-yellow-500">SALARY: ${job?.price}</p>
 
           <div className="flex gap-2">
-            <button
-              onClick={() => router.push("/")}
-              className="mt-5 bg-teal-600 px-4 py-2 rounded-md font-medium hover:bg-teal-500"
-            >
+            <button onClick={() => router.push("/")}  className="mt-5 bg-teal-600 px-4 py-2 rounded-md font-medium hover:bg-teal-500">
               Go Back
             </button>
-            <button
-              onClick={() => setModalIsOpen(true)}
-              className="mt-5 bg-blue-950 px-4 py-2 font-medium rounded-md hover:bg-blue-800"
-            >
+            <button onClick={() => setModalIsOpen(true)} className="mt-5 bg-blue-950 px-4 py-2 font-medium rounded-md hover:bg-blue-800">
               Apply
             </button>
           </div>
@@ -95,34 +90,27 @@ const JobDetail: React.FC = () => {
         </div>
       </div>
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        className="fixed inset-0 flex items-center justify-center p-4"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-75"
-      >
+      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}
+        className="fixed inset-0 flex items-center justify-center p-4" overlayClassName="fixed inset-0 bg-black bg-opacity-75">
         <div className="bg-teal-900 text-white p-6 rounded-lg shadow-xl w-96 mt-7">
           <h2 className="text-2xl font-bold mb-4 text-center">Application Form</h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <input type="text" placeholder="Full Name"
-                {...register("fullName")}
+              <input type="text" placeholder="Full Name" {...register("fullName")}
           className="w-full p-2 border rounded bg-gray-800 border-gray-700 text-white"/>
               {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
             </div>
 
             <div>
-              <input type="email" placeholder="Email Address"
-                {...register("email")}
+              <input type="email" placeholder="Email Address" {...register("email")}
    className="w-full p-2 border rounded bg-gray-800 border-gray-700 text-white"/>
               {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
 
             <div>
               <label className="block mb-1">Gender</label>
-              <select
-                {...register("gender")}
+              <select {...register("gender")}
            className="w-full p-2 border rounded bg-gray-800 border-gray-700 text-white">
                 <option value="">Select</option>
                 <option value="Male">Male</option>
@@ -133,30 +121,18 @@ const JobDetail: React.FC = () => {
             </div>
 
             <div>
-              <textarea
-                placeholder="Cover Letter"
-                {...register("coverLetter")}
-                className="w-full p-2 border rounded bg-gray-800 border-gray-700 text-white"
-              ></textarea>
+              <textarea placeholder="Cover Letter" {...register("coverLetter")} className="w-full p-2 border rounded bg-gray-800 border-gray-700 text-white"></textarea>
               {errors.coverLetter && <p className="text-red-500">{errors.coverLetter.message}</p>}
             </div>
 
             <div>
               <label className="block mb-1">Upload Resume</label>
-              <input
-                type="file"
-                {...register("resume")}
-                className="w-full p-2 bg-gray-800 text-white"
-              />
+              <input type="file" {...register("resume")} className="w-full p-2 bg-gray-800 text-white"/>
               {errors.resume && <p className="text-red-500">{errors.resume.message}</p>}
             </div>
 
             <div className="flex justify-between">
-              <button
-                type="button"
-                onClick={() => setModalIsOpen(false)}
-                className="bg-red-600 px-4 py-2 rounded hover:bg-red-500"
-              >
+              <button type="button"  onClick={() => setModalIsOpen(false)}  className="bg-red-600 px-4 py-2 rounded hover:bg-red-500">
                 Cancel
               </button>
               <button type="submit" className="bg-emerald-500 px-4 py-2 rounded hover:bg-green-800">

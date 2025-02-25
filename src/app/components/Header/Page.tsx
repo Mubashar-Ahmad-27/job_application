@@ -2,7 +2,7 @@
 import React from 'react'
 
 
-const Header = () => {
+const Header: React.FC = () => {
   return (
     <div>
              <div className='header-image flex flex-col justify-center items-center text-white'>

@@ -1,7 +1,5 @@
 "use client"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { log } from "console";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface Job {
@@ -19,7 +17,6 @@ const res =  await fetch('https://fakestoreapi.com/products')
       throw new  Error("Failed to Fetch Data")
   }
   const data =  await res.json()
-  // console.log(data)
   return data
 }
 
@@ -46,35 +43,41 @@ const GetData: React.FC = () => {
     queryFn: fetchJobs,
   });
   
-  console.log(userdata);
-  
   const mutation = useMutation({
     mutationFn: postJob,
     onSuccess: () => {  queryClient.invalidateQueries({ queryKey: ['jobs'] })},
   })
 
-  if (isLoading) return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>;
-  if (isError) return <p>Error: {error.message}</p>;
+  if (isLoading) return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>
+  if (isError) return <p>Error: {error.message}</p>
 
   return (
     <div>
       <h2 className="font-medium text-4xl text-center">Job Listings</h2>
-      <div className="flex flex-wrap justify-center gap-4 ">
-        {userdata.map((item: any) => (
-
-          <div  key={item.id} className="p-4 border rounded-md bg-teal-900 text-white w-full sm:w-2/5 m-2 ">
-
-            <h3 className="text-lg font-bold text-yellow-500">{item.title}</h3>
-            <p>{item.description}</p>
-            <p className="text-bold text-xl text-yellow-500 mb-5">SALARY: ${item.price}</p>
-
-     <button  onClick={() => router.push(`/detailpage/${item.id}`)} className="bg-black p-2 text-white rounded-md cursor-pointer  hover:bg-teal-600"                  >
-              Job Detail
-            </button>
-       
-          </div>
-        ))}
+      <div className="flex flex-wrap justify-center gap-6 p-4">
+  {userdata.map((item: any) => (
+    <div
+      key={item.id}
+      className="p-6 border border-gray-700 rounded-lg bg-teal-900 text-white w-full sm:w-[45%] md:w-[30%] shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <h3 className="text-xl font-semibold text-yellow-400 mb-2 text-center">
+        {item.title}
+      </h3>
+      <p className="font-bold text-lg text-yellow-400 text-center my-3">
+        SALARY: ${item.price}
+      </p>
+      <div className="flex justify-center">
+        <button
+          onClick={() => router.push(`/detailpage/${item.id}`)}
+          className="bg-black px-4 py-2 text-white rounded-md cursor-pointer hover:bg-teal-600 transition duration-300"
+        >
+          Job Detail
+        </button>
       </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 };
