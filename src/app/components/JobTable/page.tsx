@@ -55,4 +55,4 @@ const JobTable: React.FC<JobTableProps> = ({ jobs, onDelete, onEdit }) => {
   );
 };
 
-export default JobTable;
+export default JobTable

@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { email: string; password: string }) => {
     setLoading(true); 
     const signInData = await signIn("credentials", {
       email: data.email,
@@ -67,8 +67,8 @@ const LoginPage: React.FC = () => {
             {loading ? "Logging in..." : "Login"} 
           </button>
         </form>
-
-        <p className="text-gray-400 text-sm text-center mt-3"> Don't have an account?
+        
+        <p className="text-gray-400 text-sm text-center mt-3"> Don&apos;t have an account?
      <Link href="/signup" className="text-teal-400 text-base hover:underline"> Sign up </Link>
         </p>
       </div>

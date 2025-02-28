@@ -21,51 +21,47 @@ const DashboardPage: React.FC = () => {
 
   const router = useRouter();
 
-  // Fetch Jobs
   const fetchJobs = async () => {
     try {
-      const res = await axios.get("/api/jobs");
-      setJobs(res.data);
+      const res = await axios.get("/api/jobs")
+      setJobs(res.data)
     } catch (error) {
-      console.error("Error fetching jobs:", error);
+      console.error("Error fetching jobs:", error)
     }
   };
 
   useEffect(() => {
-    fetchJobs();
+    fetchJobs()
   }, []);
 
-  // Create Job
   const handleCreateJob = async (job: Omit<Job, "id">) => {
     try {
-      const res = await axios.post("/api/jobs", job);
-      setJobs([...jobs, res.data]); // Update UI with new job
+      const res = await axios.post("/api/jobs", job)
+      setJobs([...jobs, res.data])
       setShowForm(false);
     } catch (error) {
-      console.error("Error creating job:", error);
+      console.error("Error creating job:", error)
     }
   };
 
-  // Edit Job
   const handleEditJob = async (updatedJob: Job) => {
     try {
-      const res = await axios.put(`/api/jobs/${updatedJob.id}`, updatedJob);
-      setJobs(jobs.map((job) => (job.id === updatedJob.id ? res.data : job))); // Update UI
-      setEditJob(null);
+      const res = await axios.put(`/api/jobs/${updatedJob.id}`, updatedJob)
+      setJobs(jobs.map((job) => (job.id === updatedJob.id ? res.data : job)))
+      setEditJob(null)
     } catch (error) {
-      console.error("Error updating job:", error);
+      console.error("Error updating job:", error)
     }
-  };
+  }
 
-  // Delete Job
   const handleDeleteJob = async (id: string) => {
     try {
-      await axios.delete(`/api/jobs/${id}`);
-      setJobs(jobs.filter((job) => job.id !== id)); // Remove job from UI
+      await axios.delete(`/api/jobs/${id}`)
+      setJobs(jobs.filter((job) => job.id !== id))
     } catch (error) {
-      console.error("Error deleting job:", error);
+      console.error("Error deleting job:", error)
     }
-  };
+  }
 
   return (
     <div className="bg-teal-800 min-h-screen p-6">
@@ -74,26 +70,15 @@ const DashboardPage: React.FC = () => {
           <h1 className="text-center font-bold text-2xl">ADMIN DASHBOARD</h1>
         </div>
 
-        <button
-          className="absolute top-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition"
-          onClick={() => setShowForm(true)}
-        >
-          Create Post
+        <button className="absolute top-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition" onClick={() => setShowForm(true)}> Create Post
         </button>
 
-        <button
-          className="absolute top-5 left-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 transition"
-          onClick={() => router.push("/dashboard/application")}
-        >
+        <button className="absolute top-5 left-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 transition" onClick={() => router.push("/dashboard/application")}        >
           View Applications
         </button>
 
-        {showForm && (
-          <CreatePostForm onCreate={handleCreateJob} onClose={() => setShowForm(false)} />
-        )}
-        {editJob && (
-          <EditJobForm job={editJob} onEdit={handleEditJob} onClose={() => setEditJob(null)} />
-        )}
+      {showForm && (<CreatePostForm onCreate={handleCreateJob} onClose={() => setShowForm(false)} />)}
+        {editJob && (<EditJobForm job={editJob} onEdit={handleEditJob} onClose={() => setEditJob(null)} />)}
       </div>
 
       <div className="mt-16">

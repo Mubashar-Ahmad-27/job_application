@@ -19,40 +19,37 @@ const ApplicationsPage: React.FC = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/apply");
-        console.log("Applications Data:", response.data);
-        setApplications(response.data.applications);
+        const response = await axios.get("http://localhost:3000/api/apply")
+        console.log("Applications Data:", response.data)
+        setApplications(response.data.applications)
       } catch (error) {
-        console.error("Error fetching applications:", error.response?.data || error);
-        alert("Failed to fetch applications. Check the console for details.");
+        console.error("Error fetching applications:", error.response?.data || error)
+        alert("Failed to fetch applications. Check the console for details.")
       }
-    };
+    }
 
-    fetchApplications();
-  }, []);
+    fetchApplications()
+  }, [])
 
   const deleteApplication = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this application?")) return;
+    if (!window.confirm("Are you sure you want to delete this application?")) return
 
     try {
-      await axios.delete("http://localhost:3000/api/apply", { data: { id } });
-      setApplications(applications.filter((app) => app.id !== id)); // Remove from UI
-      alert("Application deleted successfully");
+      await axios.delete("http://localhost:3000/api/apply", { data: { id } })
+      setApplications(applications.filter((app) => app.id !== id))
+      alert("Application deleted successfully")
     } catch (error) {
-      console.error("Error deleting application:", error.response?.data || error);
-      alert("Failed to delete application.");
+      console.error("Error deleting application:", error.response?.data || error)
+      alert("Failed to delete application.")
     }
-  };
+  }
 
   return (
     <div className="bg-teal-700 min-h-screen p-6">
     
       <div className="w-full bg-white p-6 shadow-lg flex justify-between items-center rounded-lg">
         <h1 className="font-bold text-2xl">Job Applications</h1>
-        <button
-          className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
-          onClick={() => router.push("/dashboard")}
-        >
+        <button className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md   hover:bg-red-600        transition" onClick={() => router.push("/dashboard")}>
           Back to Dashboard
         </button>
       </div>
@@ -62,10 +59,7 @@ const ApplicationsPage: React.FC = () => {
         {applications.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {applications.map((app) => (
-              <div
-                key={app.id}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200"
-              >
+              <div key={app.id} className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200">
                 <div className="flex flex-col gap-3">
                   <p className="text-lg text-gray-800">
                     <span className="font-bold">Name:</span> {app.name}
@@ -76,12 +70,7 @@ const ApplicationsPage: React.FC = () => {
                   <p className="text-lg text-gray-800">
                     <span className="font-bold">Cover Letter:</span> {app.coverLetter}
                   </p>
-                  <a
-                    href={app.resumeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 font-semibold hover:underline"
-                  >
+                  <a href={app.resumeUrl} target="_blank" rel="noopener noreferrer"          className="text-indigo-600 font-semibold hover:underline">
                     View Resume
                   </a>
                   <p className="text-sm text-gray-500">
@@ -89,10 +78,7 @@ const ApplicationsPage: React.FC = () => {
                   </p>
                 </div>
 
-                <button
-                  onClick={() => deleteApplication(app.id)}
-                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 w-full"
-                >
+                <button onClick={() => deleteApplication(app.id)} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors duration-300 w-full">
                   Delete
                 </button>
               </div>

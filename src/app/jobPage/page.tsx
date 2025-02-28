@@ -5,7 +5,6 @@ import GetData from '../components/GetData/GetData'
 const JobPage = () => {
   return (
    <>
-      
       <GetData />
    </>
   )

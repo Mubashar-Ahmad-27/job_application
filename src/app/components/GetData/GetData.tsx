@@ -25,8 +25,8 @@ const GetData: React.FC = () => {
     queryFn: fetchJobs,
   });
 
-  const [selectedJob, setSelectedJob] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState({ title: "", city: "" });
+  const [selectedJob, setSelectedJob] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState({ title: "", city: "" })
 
   const filteredJobs = jobs?.filter(
     (job) =>
@@ -35,9 +35,9 @@ const GetData: React.FC = () => {
   );
 
   if (isLoading)
-    return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>;
+    return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>
   if (isError)
-    return <p className="text-center text-red-500">Error: {error.message}</p>;
+    return <p className="text-center text-red-500">Error: {error.message}</p>
 
   return (
     <div>
@@ -51,10 +51,7 @@ const GetData: React.FC = () => {
 
       <div className="mt-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         {filteredJobs?.map((job) => (
-          <div
-            key={job.id}
-            className="bg-teal-600 text-white p-6 border border-teal-700 rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
-          >
+          <div key={job.id} className="bg-teal-600 text-white p-6 border border-teal-700 rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105">
             <h3 className="text-2xl font-semibold mb-3 text-center">
               {job.title}
             </h3>
@@ -74,10 +71,7 @@ const GetData: React.FC = () => {
             </div>
 
             <div className="flex justify-center mt-4">
-              <button
-                onClick={() => setSelectedJob(job.title)}
-                className="w-64 flex items-center justify-center bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-md"
-              >
+              <button onClick={() => setSelectedJob(job.title)} className="w-64 flex items-center justify-center bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-md">
                 Apply Now <FaArrowRight className="ml-2" />
               </button>
             </div>
