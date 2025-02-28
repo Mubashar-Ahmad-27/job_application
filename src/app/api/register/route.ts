@@ -1,4 +1,4 @@
-import { db } from "@/app/libs/prismadb";
+import { db } from "@/libs/prismadb";
 import { hash } from "bcryptjs";
 import { NextResponse } from "next/server";
 

@@ -6,8 +6,8 @@
 
 
 .header-image{
-    background-image: url("/images/banner.jpeg");
-    background-position: center;
+    background-image: url("/images/bg-photo.webp");
+    /* background-position: center; */
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;

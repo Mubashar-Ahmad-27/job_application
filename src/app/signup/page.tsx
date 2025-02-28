@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const signUpSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -13,6 +14,8 @@ const signUpSchema = z.object({
 });
 
 const SignUpPage: React.FC = () => {
+
+  const router = useRouter()
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(signUpSchema),
   });
@@ -31,6 +34,8 @@ const SignUpPage: React.FC = () => {
       });
       alert("Registered Successfully!");
       reset();
+      router.push('/login')
+
 
     } catch (error: any) {
       console.error("Signup Error:", error);

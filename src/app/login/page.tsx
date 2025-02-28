@@ -18,14 +18,13 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false); 
 
   useEffect(() => {
-    if (!session || !session.user) return;
-  
+    if (!session?.user?.role) return;
     if (session.user.role === "admin") {
-      router.push("/dashboard");
+        router.push("/dashboard");
     } else {
-      router.push("/jobPage");
+        router.push("/jobPage");
     }
-  }, [session, router]);
+}, [session, router]);
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema),

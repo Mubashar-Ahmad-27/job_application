@@ -1,4 +1,4 @@
-import { db } from "@/app/libs/prismadb";
+import { db } from "@/libs/prismadb";
 import { NextResponse } from "next/server";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";

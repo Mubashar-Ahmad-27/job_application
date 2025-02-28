@@ -1,83 +1,96 @@
-"use client"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+"use client";
+import { useState } from "react";
+import Header from "@/app/components/Header/Page";
+import JobApplicationForm from "../JobApplicationForm/page";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { FaArrowRight, FaDollarSign, FaCity } from "react-icons/fa";
 
 interface Job {
   id: number;
   title: string;
   description: string;
-  price: number;
+  salary: number;
+  city: string;
 }
 
-
-const fetchJobs = async (): Promise<any> => {
-
-const res =  await fetch('https://fakestoreapi.com/products')
-  if(!res.ok){
-      throw new  Error("Failed to Fetch Data")
-  }
-  const data =  await res.json()
-  return data
-}
-
-const postJob = async(newJob : Job) =>{
-const res =  await fetch('https://fakestoreapi.com/products',{
-
-    method: 'POST',
-    headers: {"content-Type": "application/json"},
-    body: JSON.stringify(newJob)
-})
-    if (!res.ok) {
-      throw new Error("Failed to post job");
-    }
-    return res.json();
-}
+const fetchJobs = async (): Promise<Job[]> => {
+  const { data } = await axios.get("/api/jobs");
+  return data;
+};
 
 const GetData: React.FC = () => {
-
-  const queryClient = useQueryClient();
-     const router = useRouter()
-  
-  const { data: userdata, isLoading, isError, error } = useQuery({
+  const { data: jobs, isLoading, isError, error } = useQuery({
     queryKey: ["jobs"],
     queryFn: fetchJobs,
   });
-  
-  const mutation = useMutation({
-    mutationFn: postJob,
-    onSuccess: () => {  queryClient.invalidateQueries({ queryKey: ['jobs'] })},
-  })
 
-  if (isLoading) return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>
-  if (isError) return <p>Error: {error.message}</p>
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState({ title: "", city: "" });
+
+  const filteredJobs = jobs?.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchQuery.title.toLowerCase()) &&
+      job.city.toLowerCase().includes(searchQuery.city.toLowerCase())
+  );
+
+  if (isLoading)
+    return <p className="text-center font-bold mt-2 text-3xl">Loading...</p>;
+  if (isError)
+    return <p className="text-center text-red-500">Error: {error.message}</p>;
 
   return (
     <div>
-      <h2 className="font-medium text-4xl text-center">Job Listings</h2>
-      <div className="flex flex-wrap justify-center gap-6 p-4">
-  {userdata.map((item: any) => (
-    <div
-      key={item.id}
-      className="p-6 border border-gray-700 rounded-lg bg-teal-900 text-white w-full sm:w-[45%] md:w-[30%] shadow-lg hover:shadow-xl transition-shadow duration-300"
-    >
-      <h3 className="text-xl font-semibold text-yellow-400 mb-2 text-center">
-        {item.title}
-      </h3>
-      <p className="font-bold text-lg text-yellow-400 text-center my-3">
-        SALARY: ${item.price}
-      </p>
-      <div className="flex justify-center">
-        <button
-          onClick={() => router.push(`/detailpage/${item.id}`)}
-          className="bg-black px-4 py-2 text-white rounded-md cursor-pointer hover:bg-teal-600 transition duration-300"
-        >
-          Job Detail
-        </button>
-      </div>
-    </div>
-  ))}
-</div>
+      <Header onSearch={setSearchQuery} />
 
+      <h2 className="font-bold text-black text-5xl text-center mt-6">
+        JOB LISTING
+      </h2>
+
+      {filteredJobs?.length === 0 && (searchQuery.title || searchQuery.city) !== "" && alert("No jobs found")}
+
+      <div className="mt-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {filteredJobs?.map((job) => (
+          <div
+            key={job.id}
+            className="bg-teal-600 text-white p-6 border border-teal-700 rounded-lg shadow-lg transition-transform duration-300 transform hover:scale-105"
+          >
+            <h3 className="text-2xl font-semibold mb-3 text-center">
+              {job.title}
+            </h3>
+
+            <div className="flex items-center justify-center gap-2 my-2">
+              <FaDollarSign className="text-xl" />
+              <p className="text-lg font-semibold">
+                Salary: <span>${job.salary}</span>
+              </p>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 my-2">
+              <FaCity className="text-xl" />
+              <p className="text-lg font-semibold">
+                City: <span>{job.city}</span>
+              </p>
+            </div>
+
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => setSelectedJob(job.title)}
+                className="w-64 flex items-center justify-center bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-200 transition-all duration-300 shadow-md"
+              >
+                Apply Now <FaArrowRight className="ml-2" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {selectedJob && (
+        <JobApplicationForm
+          jobTitle={selectedJob}
+          onClose={() => setSelectedJob(null)}
+        />
+      )}
     </div>
   );
 };
